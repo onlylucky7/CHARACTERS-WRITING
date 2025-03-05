@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Questions</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .question-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .next-btn {
+            background-color: blue;
+            color: white;
+        }
+
+        .save-btn {
+            background-color: green;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: red;
+            color: white;
+        }
+
+        .back-btn {
+            background-color: gray;
+            color: white;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .summary-container {
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        /* Option button as square */
+        .option-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #444;
+            color: white;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* Hidden container for home button */
+        .home-container {
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Option button -->
+    <button class="option-btn" onclick="showHomeButton()">☰</button>
+
+    <div class="question-box">
+        <h2 id="question">What is your character's name?</h2>
+        <input type="text" id="answer" placeholder="Type your answer here...">
+        <button class="next-btn" onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div class="button-container"></div>
+
+    <div class="summary-container">
+        <h2>Character Summary</h2>
+        <p id="character-summary"></p>
+    </div>
+
+    <div class="home-container">
+        <button class="back-btn" onclick="goToHome()">Back to Home</button>
+    </div>
+
+    <script>
+        const questions = [
+            "What is your character's name?",
+            "What is their age?",
+            "What is their personality like?",
+            "Is your character a good or bad person?",
+            "What are their strengths?",
+            "What are their weaknesses?",
+            "What is their goal?",
+            "What makes them unique?",
+            "What is their relationship like with others?",
+            "How do they grow as a person?"
+        ];
+        let currentQuestion = 0;
+        let characterData = {};
+
+        function nextQuestion() {
+            const answer = document.getElementById("answer").value.trim();
+            if (answer === "") {
+                alert("Please answer the question for the next one!");
+                return;
+            }
+
+            // Store answer and go to the next question
+            characterData[questions[currentQuestion]] = answer;
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                document.getElementById("question").innerText = questions[currentQuestion];
+                document.getElementById("answer").value = "";
+            } else {
+                showCharacterSummary();
+                showFinalButtons();
+            }
+        }
+
+        function showCharacterSummary() {
+            const summary = `
+                <strong>Name:</strong> ${characterData["What is your character's name?"]} <br>
+                <strong>Age:</strong> ${characterData["What is their age?"]} <br>
+                <strong>Personality:</strong> ${characterData["What is their personality like?"]} <br>
+                <strong>Good/Bad:</strong> ${characterData["Is your character a good or bad person?"]} <br>
+                <strong>Strengths:</strong> ${characterData["What are their strengths?"]} <br>
+                <strong>Weaknesses:</strong> ${characterData["What are their weaknesses?"]} <br>
+                <strong>Goal:</strong> ${characterData["What is their goal?"]} <br>
+                <strong>Unique Traits:</strong> ${characterData["What makes them unique?"]} <br>
+                <strong>Relationship:</strong> ${characterData["What is their relationship like with others?"]} <br>
+                <strong>Growth:</strong> ${characterData["How do they grow as a person?"]}
+            `;
+            document.getElementById("character-summary").innerHTML = summary;
+            document.querySelector(".summary-container").style.display = "block";
+        }
+
+        function showFinalButtons() {
+            const buttonContainer = document.querySelector(".button-container");
+            buttonContainer.style.display = "block";
+
+            buttonContainer.innerHTML = `
+                <button class="save-btn" onclick="saveCharacter()">Save</button>
+                <button class="delete-btn" onclick="deleteCharacter()">Delete</button>
+                <button class="back-btn" onclick="goBack()">Back</button>
+            `;
+        }
+
+        function saveCharacter() {
+            const fileName = prompt("Enter the file name to save your character:");
+            if (fileName) {
+                const characterText = `
+                    Name: ${characterData["What is your character's name?"]}
+                    Age: ${characterData["What is their age?"]}
+                    Personality: ${characterData["What is their personality like?"]}
+                    Good/Bad: ${characterData["Is your character a good or bad person?"]}
+                    Strengths: ${characterData["What are their strengths?"]}
+                    Weaknesses: ${characterData["What are their weaknesses?"]}
+                    Goal: ${characterData["What is their goal?"]}
+                    Unique Traits: ${characterData["What makes them unique?"]}
+                    Relationship: ${characterData["What is their relationship like with others?"]}
+                    Growth: ${characterData["How do they grow as a person?"]}
+                `;
+                const blob = new Blob([characterText], { type: 'text/plain' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `${fileName}.txt`;
+                link.click();
+            }
+        }
+
+        function deleteCharacter() {
+            characterData = {};
+            currentQuestion = 0;
+            document.getElementById("question").innerText = questions[currentQuestion];
+            document.getElementById("answer").value = "";
+            document.querySelector(".question-box").style.display = "block";
+            document.querySelector(".summary-container").style.display = "none";
+            document.querySelector(".button-container").style.display = "none";
+        }
+
+        function goBack() {
+            document.querySelector(".question-box").style.display = "block";
+            document.querySelector(".summary-container").style.display = "none";
+            document.querySelector(".button-container").style.display = "none";
+            document.getElementById("question").innerText = questions[currentQuestion];
+            document.getElementById("answer").value = characterData[questions[currentQuestion]] || "";
+        }
+
+        function showHomeButton() {
+            document.querySelector(".home-container").style.display = "block";
+        }
+
+        function goToHome() {
+            window.location.href = "Index.html"; // Redirect to Index Page
+        }
+    </script>
+</body>
+
+</html>
