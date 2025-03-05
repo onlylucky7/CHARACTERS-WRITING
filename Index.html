@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Builder</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      background-image: url('backroundimg.jpg');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .content {
+      position: absolute;
+      z-index: 1;
+      text-align: center;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .new-text {
+      display: inline-block;
+      opacity: 0;
+      animation: writeIn 1s forwards;
+      animation-delay: 1s;
+      position: absolute;
+      top: 180px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      font-size: 5vw;
+      font-weight: bold;
+      color: white;
+      animation: glowingText 2s infinite alternate;
+      white-space: nowrap;
+      max-width: 90%;
+      overflow: hidden;
+    }
+
+    nav {
+      position: absolute;
+      top: 20px;
+      left: -2%;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      width: 70%;
+      max-width: 1300px;
+      background-color: rgba(0, 0, 0, 0);
+      padding: 10px 20px;
+      border-radius: 8px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 10px 20px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      white-space: nowrap;
+      display: block;
+      cursor: pointer;
+    }
+
+    nav a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .write-character-btn, .write-story-btn {
+      background-color: #ff7f50;
+      padding: 15px 30px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 40px;
+    }
+
+    .write-character-btn:hover, .write-story-btn:hover {
+      background-color: #ff6347;
+    }
+
+    /* Profile Button */
+    .profile-btn {
+      background-color: transparent;
+      border: none;
+      padding: 8px 15px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 8%;
+      right: 5%;
+      transform: translateY(-50%);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .profile-btn i {
+      font-size: 1.2rem;
+    }
+
+    .profile-btn:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+
+    /* Profile Box */
+    .profile-box {
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0, 0, 0, 0.9);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      display: none;
+      text-align: center;
+      width: 300px;
+      z-index: 10;
+    }
+
+    .profile-box input {
+      margin-bottom: 10px;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    .profile-box button {
+      background-color: #ff7f50;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+      font-size: 1.2rem;
+      transition: background-color 0.3s;
+    }
+
+    .profile-box button:hover {
+      background-color: #ff6347;
+    }
+
+    /* Settings Button */
+    .settings-btn {
+      padding: 10px;
+      background-color: #ff7f50;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .settings-btn:hover {
+      background-color: #ff6347;
+    }
+
+    /* Settings Modal */
+    .settings-modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.9);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      z-index: 10;
+      width: 300px;
+    }
+
+    .settings-modal .settings-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .settings-modal .settings-content h2 {
+      margin-bottom: 20px;
+    }
+
+    .settings-modal .settings-content ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .settings-modal .settings-content li {
+      margin: 10px 0;
+    }
+
+    .settings-modal .settings-content a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.2rem;
+    }
+
+    .settings-modal .settings-content a:hover {
+      color: #ff7f50;
+    }
+
+    .settings-modal .close-btn {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      font-size: 1.5rem;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .settings-modal .close-btn:hover {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <nav>
+    <a href="Index.html">Home</a>
+    <a href="aboutus.html">About Us</a>
+    <a onclick="openSettings()">Settings</a>
+  </nav>
+
+  <!-- Profile Button -->
+  <button class="profile-btn" onclick="toggleProfile()">
+    <i class="fas fa-user"></i>
+  </button>
+
+  <div class="content">
+    <h1>Character Builder</h1>
+    <div class="new-text">Build your character with ease!</div>
+    <button class="write-character-btn" onclick="window.location.href='CHQNA.html'">Create Character</button>
+    <button class="write-story-btn" onclick="window.location.href='writestory.html'">Write Story</button>
+  </div>
+
+  <!-- Profile Box -->
+  <div class="profile-box" id="profileBox">
+    <h2>Login</h2>
+    <img src="default-profile.png" id="profilePic" class="profile-pic" onclick="uploadProfilePic()">
+    <input type="file" id="profilePicInput" accept="image/*" onchange="changeProfilePic(event)">
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
+
+  <!-- Settings Button -->
+  <button class="settings-btn" onclick="toggleSettings()">Settings</button>
+
+  <!-- Settings Modal -->
+  <div class="settings-modal" id="settingsModal">
+    <div class="settings-content">
+      <button class="close-btn" onclick="toggleSettings()">X</button>
+      <h2>Settings</h2>
+      <ul>
+        <li><a href="#" onclick="generateName()">Generate Name</a></li>
+        <li><a href="#" onclick="openRelationshipMap()">Relationship Map</a></li>
+        <li><a href="#" onclick="myCharacter()">My Character</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Toggle Profile Box
+    function toggleProfile() {
+      document.getElementById('
