@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* Basic reset for margins and padding */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body and Background Setup */
+    body {
+      font-family: 'Arial', sans-serif;
+      color: #333;
+      line-height: 1.6;
+      background-image: url('fb7a4fcc38339df57ce1ed1e02a1b2f5.jpg');
+      background-size: cover;  /* Make the image fill the screen */
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Header Section */
+    header {
+      background-color: rgba(0, 0, 0, 0.7); /* Transparent dark overlay */
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+    }
+
+    /* About Us Section */
+    .about-content {
+      background-color: rgba(255, 255, 255, 0.5);  /* White background with 50% opacity */
+      padding: 20px;
+      margin: 20px;
+      border-radius: 10px;
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 1.2rem;
+      color: white;
+      flex-grow: 1;  /* Ensures it grows to fill available space */
+    }
+
+    .about-content p {
+      font-weight: bold;  /* Optional, for emphasis */
+    }
+
+    /* Back Button Styling */
+    .back-btn {
+      text-align: center;
+      background-color: #ff7f50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      text-decoration: none;
+      margin: 20px auto; /* Adds spacing above and centers the button */
+      display: block; /* Make it block-level to center */
+      width: 200px; /* Set width to make button look nice */
+    }
+
+    .back-btn:hover {
+      background-color: #ff6347;
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>About Us</h1>
+  </header>
+
+  <div class="about-content">
+    <p>Welcome to our website! We're dedicated to helping you create characters that inspire your imagination. Our goal is to give you all the tools you need to bring your characters to life, whether for stories, games, or any other creative projects. We believe every character deserves a story, and we're here to help you write it.</p>
+    <p>Our team is passionate about storytelling, character development, and providing users with a creative space to express their ideas. We hope you enjoy using our platform to bring your creative visions to life!</p>
+  </div>
+
+  <!-- Back Button positioned below content -->
+  <a href="Index.html" class="back-btn">Back to Home</a>
+
+</body>
+</html>
