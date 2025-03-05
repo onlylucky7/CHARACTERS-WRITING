@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Notepad</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Title Input */
+        #note-title {
+            width: 80%;
+            font-size: 2em;
+            padding: 20px;
+            border: none;
+            border-bottom: 2px solid #ccc;
+            background-color: #fafafa;
+            color: #333;
+            outline: none;
+            margin-bottom: 20px;
+        }
+
+        /* Content Textarea */
+        #note-content {
+            width: 80%;
+            height: calc(100vh - 220px); /* Adjust based on title and button height */
+            padding: 20px;
+            font-size: 1.2em;
+            border: none;
+            background-color: #fafafa;
+            color: #333;
+            resize: none;
+            outline: none;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-y: auto;
+        }
+
+        /* Buttons Container */
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        /* Individual Buttons */
+        .buttons-container button {
+            width: 40px;
+            height: 40px;
+            background-color: #444;
+            color: #fff;
+            font-size: 1.2em;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+        }
+
+        .buttons-container button:hover {
+            background-color: #555;
+        }
+
+        /* Save Button */
+        .save-button {
+            width: 50px;
+            height: 50px;
+            background-color: #444;
+            color: white;
+            font-size: 1.5em;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .save-button:hover {
+            background-color: #555;
+        }
+
+        /* Back and Theme Button */
+        .back-button,
+        .theme-button {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .back-button:hover,
+        .theme-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Dark Theme Styling */
+        .dark-theme {
+            background-color: #333;
+            color: #f4f4f4;
+        }
+
+        .dark-theme input,
+        .dark-theme textarea {
+            background-color: #555;
+            color: #f4f4f4;
+            border: none;
+        }
+
+        .dark-theme button {
+            background-color: #444;
+            color: white;
+        }
+
+        .dark-theme button:hover {
+            background-color: #666;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Title Input -->
+    <input type="text" id="note-title" placeholder="Enter note title...">
+
+    <!-- Content Textarea (Contenteditable div now) -->
+    <div id="note-content" contenteditable="true" placeholder="Write your note here..."></div>
+
+    <!-- Buttons Container -->
+    <div class="buttons-container">
+        <!-- Back Button -->
+        <button class="back-button" id="back-btn" onclick="goBack()">←</button>
+
+        <!-- Theme Button -->
+        <button class="theme-button" id="theme-btn" onclick="toggleTheme()">T</button>
+
+        <!-- Text Formatting Buttons -->
+        <button id="bold" onclick="toggleBold()">B</button>
+
+        <button id="underline" onclick="toggleUnderline()">U</button>
+
+        <!-- Save Button -->
+        <button class="save-button" onclick="saveNote()">💾</button>
+    </div>
+
+    <script>
+        // Function to toggle bold text
+        function toggleBold() {
+            document.execCommand('bold', false, null);
+        }
+
+        // Function to toggle underline text
+        function toggleUnderline() {
+            document.execCommand('underline', false, null);
+        }
+
+        // Function to save the note
+        function saveNote() {
+            const title = document.getElementById('note-title').value || 'Untitled';
+            const content = document.getElementById('note-content').innerHTML;
+
+            const blob = new Blob([`Title: ${title}\n\n${content}`], { type: 'text/html' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${title}.html`;  // Save as HTML file
+            link.click();
+        }
+
+        // Function to simulate the Back button
+        function goBack() {
+            window.location.href = "index.html";  // Redirect to Index.html
+        }
+
+        // Function to toggle between light and dark theme
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('dark-theme');
+        }
+    </script>
+
+</body>
+</html>
